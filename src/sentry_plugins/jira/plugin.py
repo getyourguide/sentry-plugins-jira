@@ -21,6 +21,7 @@ from sentry.utils.http import absolute_uri
 
 from sentry_plugins.base import CorePluginMixin
 from sentry.shared_integrations.exceptions import ApiError, ApiUnauthorized
+from sentry_plugins.jira import VERSION
 from sentry_plugins.jira.client import JiraClient
 from sentry_plugins.utils import get_secret_field_config
 from sentry.integrations import FeatureDescription, IntegrationFeatures
@@ -38,6 +39,7 @@ class JiraPlugin(CorePluginMixin, IssuePlugin2):
     description = "Integrate JIRA issues by linking a project."
     slug = "jira"
     title = "JIRA"
+    version = VERSION
     conf_title = title
     conf_key = slug
     required_field = "username"

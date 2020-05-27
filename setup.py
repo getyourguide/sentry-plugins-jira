@@ -17,15 +17,13 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 # add sentry to path so we can import sentry.utils.distutils
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
-
 from sentry.utils.distutils import (
     BuildAssetsCommand,
     BuildIntegrationDocsCommand,
     BuildJsSdkRegistryCommand,
 )
+from sentry_plugins.jira import VERSION
 
-
-VERSION = "10.1.0.dev2"
 IS_LIGHT_BUILD = os.environ.get("SENTRY_LIGHT_BUILD") == "1"
 
 
@@ -87,7 +85,6 @@ cmdclass = {
     "build_integration_docs": BuildIntegrationDocsCommand,
     "build_js_sdk_registry": BuildJsSdkRegistryCommand,
 }
-
 
 setup(
     name="sentry-plugins-jira",
