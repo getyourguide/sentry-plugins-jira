@@ -627,13 +627,22 @@ class JiraPlugin(CorePluginMixin, IssuePlugin2):
                 "required": False,
                 "help": "Automatically create a JIRA ticket for EVERY new issue",
             },
+            {
+                "name": "auto_create_fatal",
+                "label": "Automatically create JIRA Tickets for fatal errors",
+                "default": self.get_option("auto_create_fatal", project) or False,
+                "type": "bool",
+                "required": False,
+                "help": "Automatically create a JIRA ticket for new issues with level=fatal"
+            }
         ]
 
     def should_create(self, group, event, is_new):
         if not is_new:
             return False
 
-        if not self.get_option("auto_create", group.project):
+        if not (self.get_option("auto_create", group.project) or (
+                self.get_option("auto_create_fatal", group.project) and event.get_tag("level") == "fatal")):
             return False
 
         # XXX(dcramer): Sentry doesn't expect GroupMeta referenced here so we
