@@ -21,8 +21,8 @@ from sentry.utils.http import absolute_uri
 
 from sentry_plugins.base import CorePluginMixin
 from sentry.shared_integrations.exceptions import ApiError, ApiUnauthorized
-from sentry_plugins.jira import VERSION
-from sentry_plugins.jira.client import JiraClient
+from sentry_plugins.jira_gyg import VERSION
+from sentry_plugins.jira_gyg.client import JiraClient
 from sentry_plugins.utils import get_secret_field_config
 from sentry.integrations import FeatureDescription, IntegrationFeatures
 
@@ -35,10 +35,10 @@ JIRA_CUSTOM_FIELD_TYPES = {
 }
 
 
-class JiraPlugin(CorePluginMixin, IssuePlugin2):
-    description = "Integrate JIRA issues by linking a project."
-    slug = "jira"
-    title = "JIRA"
+class JiraGygPlugin(CorePluginMixin, IssuePlugin2):
+    description = "Integrate JIRA issues by linking a project (GYG Patch)."
+    slug = "jira_gyg"
+    title = "JIRA (GYG)"
     version = VERSION
     conf_title = title
     conf_key = slug
@@ -54,7 +54,7 @@ class JiraPlugin(CorePluginMixin, IssuePlugin2):
     ]
 
     def get_group_urls(self):
-        _patterns = super(JiraPlugin, self).get_group_urls()
+        _patterns = super(JiraGygPlugin, self).get_group_urls()
         _patterns.append(
             url(
                 r"^autocomplete",
@@ -142,7 +142,7 @@ class JiraPlugin(CorePluginMixin, IssuePlugin2):
         return issue_type_meta
 
     def get_new_issue_fields(self, request, group, event, **kwargs):
-        fields = super(JiraPlugin, self).get_new_issue_fields(request, group, event, **kwargs)
+        fields = super(JiraGygPlugin, self).get_new_issue_fields(request, group, event, **kwargs)
 
         jira_project_key = self.get_option("default_project", group.project)
 
@@ -395,7 +395,7 @@ class JiraPlugin(CorePluginMixin, IssuePlugin2):
     def message_from_error(self, exc):
         if isinstance(exc, ApiUnauthorized):
             return "Unauthorized: either your username and password were invalid or you do not have access"
-        return super(JiraPlugin, self).message_from_error(exc)
+        return super(JiraGygPlugin, self).message_from_error(exc)
 
     def error_message_from_json(self, data):
         message = ""
@@ -495,7 +495,7 @@ class JiraPlugin(CorePluginMixin, IssuePlugin2):
         return [(y["id"], y["name"] if "name" in y else y["value"]) for y in x] if x else []
 
     def validate_config_field(self, project, name, value, actor=None):
-        value = super(JiraPlugin, self).validate_config_field(project, name, value, actor)
+        value = super(JiraGygPlugin, self).validate_config_field(project, name, value, actor)
         # Don't make people update password every time
         if name == "password":
             value = value or self.get_option("password", project)

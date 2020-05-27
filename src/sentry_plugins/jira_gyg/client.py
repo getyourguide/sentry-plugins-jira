@@ -32,7 +32,7 @@ class JiraClient(ApiClient):
     SEARCH_URL = "/rest/api/2/search/"
     COMMENT_URL = "/rest/api/2/issue/%s/comment"
     HTTP_TIMEOUT = 5
-    plugin_name = "jira"
+    plugin_name = "jira_gyg"
 
     def __init__(self, instance_uri, username, password):
         self.base_url = instance_uri.rstrip("/")

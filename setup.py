@@ -22,7 +22,7 @@ from sentry.utils.distutils import (
     BuildIntegrationDocsCommand,
     BuildJsSdkRegistryCommand,
 )
-from sentry_plugins.jira import VERSION
+from sentry_plugins.jira_gyg import VERSION
 
 IS_LIGHT_BUILD = os.environ.get("SENTRY_LIGHT_BUILD") == "1"
 
@@ -105,10 +105,10 @@ setup(
     include_package_data=True,
     entry_points={
         "sentry.apps": [
-            "jira = sentry_plugins.jira",
+            "jira_gyg = sentry_plugins.jira_gyg",
         ],
         "sentry.plugins": [
-            "jira = sentry_plugins.jira.plugin:JiraPlugin",
+            "jira_gyg = sentry_plugins.jira_gyg.plugin:JiraGygPlugin",
         ],
     },
     classifiers=[
